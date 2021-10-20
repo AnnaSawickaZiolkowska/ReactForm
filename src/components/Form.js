@@ -76,22 +76,22 @@ const Form = () => {
     <Wrapper>
       <form noValidate autoComplete="off">
         <TextField
-          className={field}
-          id="outlined-basic"
+          margin="normal"
+          id="name"
           label="dish name"
           variant="outlined"
           color="primary"
           fullWidth
           required
           style={{ margin: "10px 0" }}
-          />
-          <TextField
-          className={field}
-          id="outlined-basic"
+        />
+        <TextField
+          margin="normal"
+          id="preparation_time"
           label="preparation time"
           type="time"
-          inputProps={{ step: "1"}}
-          InputLabelProps={{shrink: true}}
+          inputProps={{ step: "1" }}
+          InputLabelProps={{ shrink: true }}
           value="00:00:00"
           helperText="hh:mm:ss"
           variant="outlined"
@@ -101,27 +101,27 @@ const Form = () => {
           style={{ margin: "10px 0" }}
         />
         <TextField
-          id="outlined-select-currency"
-          className={field}
+          id="type"
+          margin="normal"
           select
-          label="Dish type"
+          label="dish type"
           value={dish}
           onChange={handleDishes}
           helperText="Please select your dish"
           style={{ margin: "10px 0" }}
           required
         >
-          {dishes.map(({value, label}) => (
+          {dishes.map(({ value, label }) => (
             <MenuItem key={value} value={value}>
               {label}
             </MenuItem>
           ))}
         </TextField>
         {dish === "pizza" ? (
-          <>
+          <div style={{display: "flex", justifyContent: "space-between", gap: "20px"}}>
             <TextField
               className={field}
-              id="outlined-basic"
+              id="no_of_slices"
               label="number of slices"
               type="number"
               inputProps={{ step: "2", max: 100, min: 0 }}
@@ -131,7 +131,19 @@ const Form = () => {
               required
               style={{ margin: "10px 0" }}
             />
-          </>
+             <TextField
+              className={field}
+              id="diameter"
+              label="diameter"
+              type="number"
+              inputProps={{ step: "0.01", min: "0.01" }}
+              variant="outlined"
+              color="primary"
+              fullWidth
+              required
+              style={{ margin: "10px 0" }}
+            />
+          </div>
         ) : (
           ""
         )}
