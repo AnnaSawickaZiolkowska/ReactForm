@@ -105,6 +105,24 @@ const Form = () => {
             </MenuItem>
           ))}
         </TextField>
+        {dish === "pizza" ? (
+          <>
+            <TextField
+              className={field}
+              id="outlined-basic"
+              label="number of slices"
+              type="number"
+              inputProps={{ step: "2", max: 100, min: 0 }}
+              variant="outlined"
+              color="primary"
+              fullWidth
+              required
+              style={{ margin: "10px 0" }}
+            />
+          </>
+        ) : (
+          ""
+        )}
         <button className={btn}>Order</button>
       </form>
     </Wrapper>
