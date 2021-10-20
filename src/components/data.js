@@ -1,0 +1,1 @@
+export const dishes = ["pizza", "soup", "sandwich"]
