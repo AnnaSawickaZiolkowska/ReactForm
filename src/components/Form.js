@@ -70,7 +70,7 @@ const Form = () => {
   const handleDishes = (event) => {
     setDish(event.target.value);
   };
-  const { btn, field, textField } = useStyles();
+  const { btn, field } = useStyles();
   console.log(dish);
   return (
     <Wrapper>
@@ -78,16 +78,28 @@ const Form = () => {
         <TextField
           className={field}
           id="outlined-basic"
-          label="Dish name"
-          views={["hours", "minutes", "seconds"]}
-          format="HH:mm:ss"
+          label="dish name"
+          variant="outlined"
+          color="primary"
+          fullWidth
+          required
+          style={{ margin: "10px 0" }}
+          />
+          <TextField
+          className={field}
+          id="outlined-basic"
+          label="preparation time"
+          type="time"
+          inputProps={{ step: "1"}}
+          InputLabelProps={{shrink: true}}
+          value="00:00:00"
+          helperText="hh:mm:ss"
           variant="outlined"
           color="primary"
           fullWidth
           required
           style={{ margin: "10px 0" }}
         />
-        {/* <input className={textField} type="time" step="1" variant="outlined" /> */}
         <TextField
           id="outlined-select-currency"
           className={field}
@@ -99,9 +111,9 @@ const Form = () => {
           style={{ margin: "10px 0" }}
           required
         >
-          {dishes.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {dishes.map(({value, label}) => (
+            <MenuItem key={value} value={value}>
+              {label}
             </MenuItem>
           ))}
         </TextField>
