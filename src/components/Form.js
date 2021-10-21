@@ -59,7 +59,7 @@ const Wrapper = styled.section`
       flex-direction: column;
       background-color: #fff;
       width: 600px;
-      height: 600px;
+      height: fit-content;
       padding 25px;
       border-radius: 10px;
   }
@@ -81,9 +81,9 @@ const Form = () => {
           label="dish name"
           variant="outlined"
           color="primary"
+          helperText=""
           fullWidth
           required
-          style={{ margin: "10px 0" }}
         />
         <TextField
           margin="normal"
@@ -98,7 +98,6 @@ const Form = () => {
           color="primary"
           fullWidth
           required
-          style={{ margin: "10px 0" }}
         />
         <TextField
           id="type"
@@ -108,7 +107,6 @@ const Form = () => {
           value={dish}
           onChange={handleDishes}
           helperText="Please select your dish"
-          style={{ margin: "10px 0" }}
           required
         >
           {dishes.map(({ value, label }) => (
@@ -118,32 +116,54 @@ const Form = () => {
           ))}
         </TextField>
         {dish === "pizza" ? (
-          <div style={{display: "flex", justifyContent: "space-between", gap: "20px"}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "20px",
+            }}
+          >
             <TextField
-              className={field}
+              margin="normal"
               id="no_of_slices"
               label="number of slices"
               type="number"
               inputProps={{ step: "2", max: 100, min: 0 }}
               variant="outlined"
               color="primary"
+              helperText=""
               fullWidth
               required
-              style={{ margin: "10px 0" }}
             />
-             <TextField
-              className={field}
+            <TextField
+              margin="normal"
               id="diameter"
               label="diameter"
               type="number"
               inputProps={{ step: "0.01", min: "0.01" }}
               variant="outlined"
               color="primary"
+              helperText=""
               fullWidth
               required
-              style={{ margin: "10px 0" }}
             />
           </div>
+        ) : (
+          ""
+        )}
+        {dish === "soup" ? (
+          <TextField
+            margin="normal"
+            id="spiciness_scale"
+            label="spiciness scale"
+            type="number"
+            inputProps={{ step: "1", max: 10, min: 1 }}
+            variant="outlined"
+            color="primary"
+            fullWidth
+            helperText="choose from 1 - 10"
+            required
+          />
         ) : (
           ""
         )}
