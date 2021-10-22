@@ -81,7 +81,7 @@ const Form = () => {
           label="dish name"
           variant="outlined"
           color="primary"
-          helperText=""
+          helperText=" "
           fullWidth
           required
         />
@@ -131,7 +131,7 @@ const Form = () => {
               inputProps={{ step: "2", max: 100, min: 0 }}
               variant="outlined"
               color="primary"
-              helperText=""
+              helperText=" "
               fullWidth
               required
             />
@@ -143,7 +143,7 @@ const Form = () => {
               inputProps={{ step: "0.01", min: "0.01" }}
               variant="outlined"
               color="primary"
-              helperText=""
+              helperText=" "
               fullWidth
               required
             />
@@ -162,6 +162,21 @@ const Form = () => {
             color="primary"
             fullWidth
             helperText="choose from 1 - 10"
+            required
+          />
+        ) : (
+          ""
+        )}
+        {dish === "sandwich" ? ( <TextField
+            margin="normal"
+            id="slices_of_bread"
+            label="slices of bread"
+            type="number"
+            inputProps={{ step: "1", min: 1 }}
+            variant="outlined"
+            color="primary"
+            fullWidth
+            helperText=" "
             required
           />
         ) : (
