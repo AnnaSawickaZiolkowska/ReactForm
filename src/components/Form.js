@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
 import { useStyles } from "../hooks/useStyles";
+import useToggle from "../hooks/useToggle";
 
 const Wrapper = styled.section`
   display: grid;
@@ -36,9 +37,7 @@ const Form = () => {
     spiciness_scale: "",
     slices_of_bread: "",
   });
-  const onChangeDish = (e) => {
-    setUserDish({ ...userDish, [e.target.id]: e.target.value });
-  };
+  const [validate, setValidate] = useToggle();
 
   const {
     name,
@@ -49,12 +48,37 @@ const Form = () => {
     spiciness_scale,
     slices_of_bread,
   } = userDish;
-  console.log(userDish);
+  const onChangeDish = (e) => {
+    setUserDish({ ...userDish, [e.target.id]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { ...userDish, id: Date.now() };
+    console.log(data);
+    try {
+      let result = await fetch(
+        "https://frosty-wood-6558.getsandbox.com:443/dishes",
+        {
+          method: "post",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const { btn } = useStyles();
+
   return (
     <Wrapper>
-      <form noValidate autoComplete="off">
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           id="name"
@@ -65,6 +89,7 @@ const Form = () => {
           fullWidth
           inputProps={{ value: name, onChange: onChangeDish }}
           required
+          error={name === "" ? !validate : validate}
         />
         <TextField
           margin="normal"
@@ -83,6 +108,7 @@ const Form = () => {
           color="primary"
           fullWidth
           required
+          error={preparation_time === "00:00:00" ? !validate : validate}
         />
         <TextField
           id="type"
@@ -93,6 +119,7 @@ const Form = () => {
           onChange={handleDishes}
           helperText="Please select your dish"
           required
+          error={type === "" ? !validate : validate}
         >
           {dishes.map(({ value, label }) => (
             <MenuItem key={value} value={value}>
@@ -125,6 +152,7 @@ const Form = () => {
               helperText=" "
               fullWidth
               required
+              error={no_of_slices === "" ? !validate : validate}
             />
             <TextField
               margin="normal"
@@ -142,6 +170,7 @@ const Form = () => {
               helperText=" "
               fullWidth
               required
+              error={diameter === "" ? !validate : validate}
             />
           </div>
         ) : (
@@ -165,6 +194,7 @@ const Form = () => {
             fullWidth
             helperText="choose from 1 - 10"
             required
+            error={spiciness_scale === "" ? !validate : validate}
           />
         ) : (
           ""
@@ -186,11 +216,12 @@ const Form = () => {
             fullWidth
             helperText=" "
             required
+            error={slices_of_bread === "" ? !validate : validate}
           />
         ) : (
           ""
         )}
-        <button className={btn}>Order</button>
+        <button className={btn}>Post</button>
       </form>
     </Wrapper>
   );
