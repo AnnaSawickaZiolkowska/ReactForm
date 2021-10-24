@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
 import { useStyles } from "../hooks/useStyles";
 import useToggle from "../hooks/useToggle";
+import validation from "./validation"
 
 const Wrapper = styled.section`
   display: grid;
@@ -38,7 +39,7 @@ const Form = () => {
     slices_of_bread: "",
   });
   const [validate, setValidate] = useToggle();
-
+  const [errors, setErrors] = useState({})
   const {
     name,
     preparation_time,
@@ -51,34 +52,41 @@ const Form = () => {
   const onChangeDish = (e) => {
     setUserDish({ ...userDish, [e.target.id]: e.target.value });
   };
+  console.log(errors);
+  console.log(errors.name);
+  console.log(errors.spiciness_scale);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { ...userDish, id: Date.now() };
-    console.log(data);
-    try {
-      let result = await fetch(
-        "https://frosty-wood-6558.getsandbox.com:443/dishes",
-        {
-          method: "post",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+setErrors(validation(userDish))
+
+
+    // const data = { ...userDish, id: Date.now() };
+    // console.log(data);
+    // try {
+    //   let result = await fetch(
+    //     "https://frosty-wood-6558.getsandbox.com:443/dishes",
+    //     {
+    //       method: "post",
+    //       mode: "no-cors",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Accept: "application/json",
+    //       },
+    //       body: JSON.stringify(data),
+    //     }
+    //   );
+    //   console.log(result);
+    // } catch (error) {
+    //   console.log(error.message);
+    // }
   };
 
   const { btn } = useStyles();
 
   return (
     <Wrapper>
-      <form autoComplete="off" onSubmit={handleSubmit}>
+      <form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           id="name"
@@ -89,7 +97,7 @@ const Form = () => {
           fullWidth
           inputProps={{ value: name, onChange: onChangeDish }}
           required
-          error={name === "" ? !validate : validate}
+          error={Boolean(errors?.name)}
         />
         <TextField
           margin="normal"
@@ -103,12 +111,12 @@ const Form = () => {
           }}
           InputLabelProps={{ shrink: true }}
           value="00:00:00"
-          helperText="hh:mm:ss"
+          helperText={errors.preparation_time ? errors.preparation_time : "hh:mm:ss"}
           variant="outlined"
           color="primary"
           fullWidth
           required
-          error={preparation_time === "00:00:00" ? !validate : validate}
+          error={Boolean(errors?.preparation_time)}
         />
         <TextField
           id="type"
@@ -117,9 +125,9 @@ const Form = () => {
           label="dish type"
           inputProps={{ value: type, onChange: onChangeDish }}
           onChange={handleDishes}
-          helperText="Please select your dish"
+          helperText={errors.type ? errors.type : "Please select your dish"}
           required
-          error={type === "" ? !validate : validate}
+          error={Boolean(errors?.type)}
         >
           {dishes.map(({ value, label }) => (
             <MenuItem key={value} value={value}>
@@ -143,16 +151,16 @@ const Form = () => {
               inputProps={{
                 step: "2",
                 max: 100,
-                min: 0,
+                min: 2,
                 value: no_of_slices,
                 onChange: onChangeDish,
               }}
               variant="outlined"
               color="primary"
-              helperText=" "
+              helperText={errors.no_of_slices ? errors.no_of_slices : " "}
               fullWidth
               required
-              error={no_of_slices === "" ? !validate : validate}
+              error={Boolean(errors?.no_of_slices)}
             />
             <TextField
               margin="normal"
@@ -160,18 +168,18 @@ const Form = () => {
               label="diameter"
               type="number"
               inputProps={{
-                step: "0.01",
-                min: "0.01",
+                step: "01.00",
+                min: "18.00",
                 value: diameter,
                 onChange: onChangeDish,
               }}
               variant="outlined"
               color="primary"
-              helperText=" "
+              helperText={errors.diameter ? errors.diameter : " "}
               fullWidth
               required
-              error={diameter === "" ? !validate : validate}
-            />
+              error={Boolean(errors?.diameter)}
+              />
           </div>
         ) : (
           ""
@@ -192,9 +200,10 @@ const Form = () => {
             variant="outlined"
             color="primary"
             fullWidth
-            helperText="choose from 1 - 10"
+            helperText={errors.spiciness_scale ? errors.spiciness_scale : "choose from 1 - 10"}
             required
-            error={spiciness_scale === "" ? !validate : validate}
+            error={Boolean(errors?.spiciness_scale)}
+
           />
         ) : (
           ""
@@ -214,9 +223,10 @@ const Form = () => {
             variant="outlined"
             color="primary"
             fullWidth
-            helperText=" "
+            helperText={errors.slices_of_bread ? errors.slices_of_bread : " "}
             required
-            error={slices_of_bread === "" ? !validate : validate}
+            error={Boolean(errors?.slices_of_bread)}
+
           />
         ) : (
           ""
