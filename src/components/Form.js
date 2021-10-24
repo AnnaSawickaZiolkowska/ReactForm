@@ -1,29 +1,12 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
 import { useStyles } from "../hooks/useStyles";
 import useToggle from "../hooks/useToggle";
 import validation from "./validation";
+import { Wrapper } from "./Form.styled";
 
-const Wrapper = styled.section`
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  
-  form {
-      display: flex;
-      flex-direction: column;
-      background-color: #fff;
-      width: 600px;
-      height: fit-content;
-      padding 25px;
-      border-radius: 10px;
-  }
-`;
 
 const Form = () => {
   const handleDishes = (event) => {
@@ -52,9 +35,7 @@ const Form = () => {
   const onChangeDish = (e) => {
     setUserDish({ ...userDish, [e.target.id]: e.target.value });
   };
-  console.log(errors);
-  console.log(Object.keys(errors).length === 0);
-  console.log(errors === {});
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(validation(userDish));
