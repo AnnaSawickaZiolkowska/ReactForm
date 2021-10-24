@@ -53,13 +53,12 @@ const Form = () => {
     setUserDish({ ...userDish, [e.target.id]: e.target.value });
   };
   console.log(errors);
-  console.log(errors.name);
-  console.log(errors.spiciness_scale);
-
+  console.log(Object.keys(errors).length === 0);
+  console.log(errors === {});
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(validation(userDish));
-    if (!errors) {
+    if (Object.keys(errors).length === 0) {
       const data = { ...userDish, id: Date.now() };
       console.log(data);
       try {
