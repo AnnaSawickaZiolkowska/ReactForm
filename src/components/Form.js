@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
 import { useStyles } from "../hooks/useStyles";
 import useToggle from "../hooks/useToggle";
-import validation from "./validation"
+import validation from "./validation";
 
 const Wrapper = styled.section`
   display: grid;
@@ -39,7 +39,7 @@ const Form = () => {
     slices_of_bread: "",
   });
   const [validate, setValidate] = useToggle();
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
   const {
     name,
     preparation_time,
@@ -58,28 +58,28 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-setErrors(validation(userDish))
-
-
-    // const data = { ...userDish, id: Date.now() };
-    // console.log(data);
-    // try {
-    //   let result = await fetch(
-    //     "https://frosty-wood-6558.getsandbox.com:443/dishes",
-    //     {
-    //       method: "post",
-    //       mode: "no-cors",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "application/json",
-    //       },
-    //       body: JSON.stringify(data),
-    //     }
-    //   );
-    //   console.log(result);
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
+    setErrors(validation(userDish));
+    if (!errors) {
+      const data = { ...userDish, id: Date.now() };
+      console.log(data);
+      try {
+        let result = await fetch(
+          "https://frosty-wood-6558.getsandbox.com:443/dishes",
+          {
+            method: "post",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        console.log(result);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   };
 
   const { btn } = useStyles();
@@ -111,7 +111,9 @@ setErrors(validation(userDish))
           }}
           InputLabelProps={{ shrink: true }}
           value="00:00:00"
-          helperText={errors.preparation_time ? errors.preparation_time : "hh:mm:ss"}
+          helperText={
+            errors.preparation_time ? errors.preparation_time : "hh:mm:ss"
+          }
           variant="outlined"
           color="primary"
           fullWidth
@@ -179,7 +181,7 @@ setErrors(validation(userDish))
               fullWidth
               required
               error={Boolean(errors?.diameter)}
-              />
+            />
           </div>
         ) : (
           ""
@@ -200,10 +202,13 @@ setErrors(validation(userDish))
             variant="outlined"
             color="primary"
             fullWidth
-            helperText={errors.spiciness_scale ? errors.spiciness_scale : "choose from 1 - 10"}
+            helperText={
+              errors.spiciness_scale
+                ? errors.spiciness_scale
+                : "choose from 1 - 10"
+            }
             required
             error={Boolean(errors?.spiciness_scale)}
-
           />
         ) : (
           ""
@@ -226,7 +231,6 @@ setErrors(validation(userDish))
             helperText={errors.slices_of_bread ? errors.slices_of_bread : " "}
             required
             error={Boolean(errors?.slices_of_bread)}
-
           />
         ) : (
           ""
