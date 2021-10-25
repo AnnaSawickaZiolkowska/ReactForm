@@ -1,28 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
 import { useStyles } from "../hooks/useStyles";
-import useToggle from "../hooks/useToggle";
-import validation from "./validation";
 import { Wrapper } from "./Form.styled";
-
+import useForm from "../hooks/useForm"
 
 const Form = () => {
-  const handleDishes = (event) => {
-    setUserDish({ ...userDish, type: event.target.value });
-  };
-  const [userDish, setUserDish] = useState({
-    name: "",
-    preparation_time: "00:00:00",
-    type: "",
-    no_of_slices: "",
-    diameter: "",
-    spiciness_scale: "",
-    slices_of_bread: "",
-  });
-  const [validate, setValidate] = useToggle();
-  const [errors, setErrors] = useState({});
+  
+  const { btn } = useStyles();
+  const {handleDishes, onChangeDish, handleSubmit, errors, userDish} = useForm();
   const {
     name,
     preparation_time,
@@ -32,38 +19,6 @@ const Form = () => {
     spiciness_scale,
     slices_of_bread,
   } = userDish;
-  const onChangeDish = (e) => {
-    setUserDish({ ...userDish, [e.target.id]: e.target.value });
-  };
- 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(validation(userDish));
-    if (Object.keys(errors).length === 0) {
-      const data = { ...userDish, id: Date.now() };
-      console.log(data);
-      try {
-        let result = await fetch(
-          "https://frosty-wood-6558.getsandbox.com:443/dishes",
-          {
-            method: "post",
-            mode: "no-cors",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        console.log(result);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const { btn } = useStyles();
-
   return (
     <Wrapper>
       <form autoComplete="off" noValidate onSubmit={handleSubmit}>
