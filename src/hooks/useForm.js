@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validation from "../components/validation";
 
-const useForm = () => {
+const useForm = (submitForm) => {
 const handleDishes = (e) => {
     setUserDish({ ...userDish, type: e.target.value });
   };
@@ -9,25 +9,24 @@ const handleDishes = (e) => {
     name: "",
     preparation_time: "00:00:00",
     type: "",
-    no_of_slices: "",
-    diameter: "",
-    spiciness_scale: "",
-    slices_of_bread: "",
+    no_of_slices: 0,
+    diameter: 0,
+    spiciness_scale: 0,
+    slices_of_bread: 0,
   });
   const [errors, setErrors] = useState({});
+  const [dataIsCorrect, setDataIsCorrect] = useState(false)
  
   const onChangeDish = (e) => {
     setUserDish({ ...userDish, [e.target.id]: e.target.value });
   };
- 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(validation(userDish));
-    if (Object.keys(errors).length === 0) {
-      const data = { ...userDish, id: Date.now() };
-      console.log(data);
+
+useEffect(() => {
+  if (Object.keys(errors).length === 0 && dataIsCorrect) {
+    submitForm(true);
+    const data = { ...userDish, id: Date.now() };
       try {
-        let result = await fetch(
+        let result = fetch(
           "https://frosty-wood-6558.getsandbox.com:443/dishes",
           {
             method: "post",
@@ -43,9 +42,13 @@ const handleDishes = (e) => {
       } catch (error) {
         console.log(error.message);
       }
-    } else {
-        return
-    }
+  }
+}, [errors, dataIsCorrect, submitForm, userDish])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(validation(userDish));
+    setDataIsCorrect(true);
   };
 
   return {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { dishes } from "../data";
@@ -8,8 +8,13 @@ import useForm from "../hooks/useForm"
 
 const Form = () => {
   
+  const [formIsSubmitted, setFormIsSubmitted] = useState(false);
+  const submitForm = () => {
+    setFormIsSubmitted(true);
+  }
+
   const { btn } = useStyles();
-  const {handleDishes, onChangeDish, handleSubmit, errors, userDish} = useForm();
+  const {handleDishes, onChangeDish, handleSubmit, errors, userDish} = useForm(submitForm);
   const {
     name,
     preparation_time,
