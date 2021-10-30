@@ -8,7 +8,7 @@ Form Data submitted via POST request as a JSON
 * Hooks
 * Styled Components
 * Material UI
-* API
+* REST API
 
 ## Live Demo & Setup
 
