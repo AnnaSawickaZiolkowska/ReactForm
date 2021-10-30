@@ -1,20 +1,31 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { dishes } from "../data";
+import { DISHES, SPICINESS_SCALE } from "../data";
 import { useStyles } from "../hooks/useStyles";
 import { Wrapper } from "./Form.styled";
-import useForm from "../hooks/useForm"
+import useForm from "../hooks/useForm";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const Form = () => {
-  
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
   const submitForm = () => {
     setFormIsSubmitted(true);
-  }
+  };
 
   const { btn } = useStyles();
-  const {handleDishes, onChangeDish, handleSubmit, errors, userDish} = useForm(submitForm);
+  const {
+    handleDishes,
+    handleSpiciness,
+    onChangeDish,
+    handleSubmit,
+    errors,
+    userDish,
+  } = useForm(submitForm);
   const {
     name,
     preparation_time,
@@ -24,6 +35,7 @@ const Form = () => {
     spiciness_scale,
     slices_of_bread,
   } = userDish;
+
   return (
     <Wrapper>
       <form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -71,7 +83,7 @@ const Form = () => {
           required
           error={Boolean(errors?.type)}
         >
-          {dishes.map(({ value, label }) => (
+          {DISHES.map(({ value, label }) => (
             <MenuItem key={value} value={value}>
               {label}
             </MenuItem>
@@ -127,29 +139,26 @@ const Form = () => {
           ""
         )}
         {type === "soup" ? (
-          <TextField
-            margin="normal"
-            id="spiciness_scale"
-            label="spiciness scale"
-            type="number"
-            inputProps={{
-              step: "1",
-              max: 10,
-              min: 1,
-              value: spiciness_scale,
-              onChange: onChangeDish,
-            }}
-            variant="outlined"
-            color="primary"
-            fullWidth
-            helperText={
-              errors.spiciness_scale
-                ? errors.spiciness_scale
-                : "choose from 1 - 10"
-            }
-            required
-            error={Boolean(errors?.spiciness_scale)}
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">spiciness scale</FormLabel>
+            <RadioGroup
+              aria-label="spiciness scale"
+              name="spiciness_scale"
+              id="spiciness_scale"
+              onChange={handleSpiciness}
+              value={spiciness_scale}
+              row
+            >
+              {SPICINESS_SCALE.map(({ value, label }) => (
+                <FormControlLabel
+                  key={value}
+                  value={value}
+                  control={<Radio size="small" />}
+                  label={label}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         ) : (
           ""
         )}

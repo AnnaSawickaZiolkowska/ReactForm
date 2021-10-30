@@ -5,14 +5,19 @@ const useForm = (submitForm) => {
 const handleDishes = (e) => {
     setUserDish({ ...userDish, type: e.target.value });
   };
+const handleSpiciness = (e) => {
+  setUserDish({ ...userDish, spiciness_scale: e.target.value });
+
+}
+
   const [userDish, setUserDish] = useState({
     name: "",
     preparation_time: "00:00:00",
     type: "",
-    no_of_slices: 0,
-    diameter: 0,
-    spiciness_scale: 0,
-    slices_of_bread: 0,
+    no_of_slices: "",
+    diameter: "",
+    spiciness_scale: "",
+    slices_of_bread: "",
   });
   const [errors, setErrors] = useState({});
   const [dataIsCorrect, setDataIsCorrect] = useState(false)
@@ -20,6 +25,7 @@ const handleDishes = (e) => {
   const onChangeDish = (e) => {
     setUserDish({ ...userDish, [e.target.id]: e.target.value });
   };
+console.log(userDish);
 
 useEffect(() => {
   if (Object.keys(errors).length === 0 && dataIsCorrect) {
@@ -52,7 +58,7 @@ useEffect(() => {
   };
 
   return {
-    handleDishes, onChangeDish, handleSubmit, errors, userDish
+    handleDishes, handleSpiciness, onChangeDish, handleSubmit, errors, userDish
   }
 }
 
