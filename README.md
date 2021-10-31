@@ -1,6 +1,7 @@
 # Simple Form with React
 
-Form Data submitted via POST request as a JSON 
+Form Data submitted via POST request as a JSON .
+RWD without Media Queries
 
 ## Tech Stack
 
