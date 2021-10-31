@@ -10,6 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import Input from "./inputs/Input";
 
 const Form = () => {
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
@@ -39,37 +40,25 @@ const Form = () => {
   return (
     <Wrapper>
       <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <TextField
-          margin="normal"
+        <Input
           id="name"
           label="dish name"
-          variant="outlined"
-          color="primary"
           helperText=" "
-          fullWidth
-          inputProps={{ value: name, onChange: onChangeDish }}
-          required
+          value={name}
+          onChange={onChangeDish}
           error={Boolean(errors?.name)}
         />
-        <TextField
-          margin="normal"
+        <Input
           id="preparation_time"
           label="preparation time"
           type="time"
-          inputProps={{
-            step: "1",
-            value: preparation_time,
-            onChange: onChangeDish,
-          }}
+          inputProps={{ step: "1" }}
+          value={preparation_time}
+          onChange={onChangeDish}
           InputLabelProps={{ shrink: true }}
-          value="00:00:00"
           helperText={
             errors.preparation_time ? errors.preparation_time : "hh:mm:ss"
           }
-          variant="outlined"
-          color="primary"
-          fullWidth
-          required
           error={Boolean(errors?.preparation_time)}
         />
         <TextField
@@ -97,41 +86,24 @@ const Form = () => {
               gap: "20px",
             }}
           >
-            <TextField
-              margin="normal"
+            <Input
               id="no_of_slices"
               label="number of slices"
               type="number"
-              inputProps={{
-                step: "2",
-                max: 100,
-                min: 2,
-                value: no_of_slices,
-                onChange: onChangeDish,
-              }}
-              variant="outlined"
-              color="primary"
+              inputProps={{ step: "2", max: 100, min: 2 }}
+              value={no_of_slices}
+              onChange={onChangeDish}
               helperText={errors.no_of_slices ? errors.no_of_slices : " "}
-              fullWidth
-              required
               error={Boolean(errors?.no_of_slices)}
             />
-            <TextField
-              margin="normal"
+            <Input
               id="diameter"
               label="diameter"
               type="number"
-              inputProps={{
-                step: "01.00",
-                min: "18.00",
-                value: diameter,
-                onChange: onChangeDish,
-              }}
-              variant="outlined"
-              color="primary"
+              inputProps={{ step: ".50", min: "18.00" }}
+              value={diameter}
+              onChange={onChangeDish}
               helperText={errors.diameter ? errors.diameter : " "}
-              fullWidth
-              required
               error={Boolean(errors?.diameter)}
             />
           </div>
@@ -163,22 +135,14 @@ const Form = () => {
           ""
         )}
         {type === "sandwich" ? (
-          <TextField
-            margin="normal"
+          <Input
             id="slices_of_bread"
             label="slices of bread"
             type="number"
-            inputProps={{
-              step: "1",
-              min: 1,
-              value: slices_of_bread,
-              onChange: onChangeDish,
-            }}
-            variant="outlined"
-            color="primary"
-            fullWidth
+            inputProps={{ step: "1", min: 1 }}
+            onChange={onChangeDish}
+            value={slices_of_bread}
             helperText={errors.slices_of_bread ? errors.slices_of_bread : " "}
-            required
             error={Boolean(errors?.slices_of_bread)}
           />
         ) : (
