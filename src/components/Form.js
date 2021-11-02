@@ -148,7 +148,12 @@ const Form = () => {
         ) : (
           ""
         )}
-        <button className={btn}>Post</button>
+
+        {formIsSubmitted ? (
+          <h3>You just posted your form</h3>
+        ) : (
+          <button className={btn}>Post</button>
+        )}
       </form>
     </Wrapper>
   );
